@@ -1,0 +1,42 @@
+Exercises
+
+Use Sakila Database:
+For this exercise we will use the Sakila database that we have been using during the SQL review. It is an example database that simulates a movie rental store. It contains tables such as film (movies), actor (actors),
+customer (customers), rental (rentals), category (categories), among others. These tables contain information about
+movies, actors, customers, rentals, and more, and are used to perform queries and data analysis in the context of a
+movie rental store.
+1. Select all movie names without duplicates.
+2. Display the names of all movies that have a "PG-13" rating.
+3. Find the title and description of all movies that contain the word "amazing" in their description.
+4. Find the title of all movies that are longer than 120 minutes.
+5. Retrieve the names of all actors.
+6. Find the first and last names of actors who have "Gibson" in their last name.
+7. Find the names of actors who have an actor_id between 10 and 20.
+8. Find the titles of movies in the film table that are neither "R" nor "PG-13" in rating.
+9. Find the total number of movies in each rating in the film table and display the rating along with
+the count.
+10. Find the total number of movies rented by each customer and display the customer ID, first name, and
+last name along with the number of movies rented.
+11. Find the total number of movies rented by category and display the category name along with the
+rental count.
+12. Find the average length of movies for each rating in the film table and display the
+rating along with the average length.
+13. Find the first and last names of actors who appear in the movie with title "Indian Love".
+14. Display the title of all movies that contain the word "dog" or "cat" in their description.
+15. There is an actor or actress that does not appear in any movie in the film_actor table.
+16. Find the title of all movies that were released between 2005 and 2010.
+17. Find the title of all movies that are in the same category as "Family."
+18. Display the first and last name of actors who appear in more than 10 movies.
+19. Find the title of all movies that are "R" and have a duration greater than 2 hours in the film table.
+20. Find the movie categories that have an average duration greater than 120 minutes and display the category name along with the average duration.
+21. Find the actors who have acted in at least 5 movies and display the actor's name along with the number of movies they have acted in.
+22. Find the title of all movies that were rented for more than 5 days. Use a subquery to
+find rental_ids with a duration greater than 5 days and then select the corresponding movies.
+23. Find the first and last names of actors who have not acted in any movies in the "Horror" category.
+Use a subquery to find actors who have acted in movies in the "Horror" category and then
+exclude them from the list of actors.
+BONUS
+24. BONUS: Find the title of movies that are comedies and have a duration greater than 180 minutes in the
+film table.
+25. BONUS: Find all actors who have acted together in at least one movie. The query should return the
+first and last names of the actors and the number of movies they have acted in together.
