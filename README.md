@@ -18,10 +18,11 @@ The content of Module 2 is decribed below:*
 - ✔️ Use of **COMMON TABLE EXPRESSIONS** (**CTEs**)
 
 ## 🤓 About the exam
-- The assessment consists of a series of questions that test the understanding of the student and skills in relation to SQL.
-- It must be completed individually.
-- External resources, including the internet and reference materials from class can be used.
-- After the exam, the student will defend it during an individual technical interview with the teacher.
+- **Scope of exam**: the assessment consists of a series of questions that test the understanding of the student and skills in relation to SQL
+- **Database to be used**: [SAKILA DATABASE](https://dev.mysql.com/doc/sakila/en/) 
+- **Technical interview**: after the exam, the student defends it during an individual technical interview with the teacher.
+- **Exam statement**: exam_statement.txt
+- **Exam resolution**: [module_2_final_evaluation_carla.sql](module_2_final_evaluation_carla.sql)
 
 
 ## 🧱Built with
