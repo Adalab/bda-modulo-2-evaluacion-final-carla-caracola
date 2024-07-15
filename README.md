@@ -3,9 +3,9 @@
 *In this repository, you will find the solution to the exercises of the final exam of module 2 of the Adalab Data Analysis Bootcamp, carried out by the student Carla Biscotti.
 The content of Module 2 is decribed below:*
 
-## 📋Module content
+## 📋Module 2: Data Extraction and Processing and SQL
 
-### Data Extraction
+### Data Extraction and Processing
 - ✔️ **API**: understand what an API, how to use them and what they are useful for.
 - ✔️ **Data** processing: handle the results of a json for cleaning and data extraction.
 - ✔️ **Web scrapping**: know how to extract data using **Beautiful Soup** and **Selenium**.
@@ -16,6 +16,12 @@ The content of Module 2 is decribed below:*
 - ✔️ Use of **JOINS** (including **UNION** and **UNION ALL**)
 - ✔️ Mastering the use of **SUBQUERIES** and **CORRELATED SUBQUERIES**
 - ✔️ Use of **COMMON TABLE EXPRESSIONS** (**CTEs**)
+
+## 🤓 About the exam
+- The assessment consists of a series of questions that test the understanding of the student and skills in relation to SQL.
+- It must be completed individually.
+- External resources, including the internet and reference materials from class can be used.
+- After the exam, the student will defend it during an individual technical interview with the teacher.
 
 
 ## 🧱Built with
