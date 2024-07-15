@@ -114,7 +114,7 @@ GROUP BY
 	customer_id;
 
 -- Exercise 11 - Find the total number of movies rented by category and display the category name along with the rental count
-/* create a Common Table Expression that links an inventory record with its correspondent category name 
+/* create a Common Table Expression that links each inventory record with its correspondent category name 
 using inventory_id > film_id > category_id > name */
 WITH InventoryWithCategory AS (		
 	SELECT 
@@ -147,7 +147,6 @@ GROUP BY (rating);
 
 
 -- Exercise 13 - Find the first and last names of the actors who appear in the film with the title "Indian Love".
-
 SELECT
     first_name,
     last_name
@@ -200,5 +199,197 @@ WHERE
 	actor_id IN (2, 8, 38, 77, 81, 107, 135, 149, 176, 177);
 
 
+-- Exercise 14 - Displays the titles of all movies that contain the word "dog" or "cat" in their description
+SELECT
+	title AS MovieName,
+    description -- the excercise statement itself doesn't ask to display this value. I added it to verify the query retrieves correct data
+FROM
+	film
+WHERE 
+	description LIKE "%dog%" OR description LIKE "%cat%";
 
+
+-- Exercise 15 - Are there any actors or actresses who do not appear in any films in the film_actor table?
+SELECT
+	actor_id
+FROM 
+	actor
+WHERE actor_id NOT IN (
+	SELECT 
+		actor_id
+    FROM
+		film_actor
+	);
+    
+    
+-- Exercise 16 - Find the title of all the movies that were released between 2005 and 2010
+SELECT 
+	title,
+    release_year -- the excercise statement itself doesn't ask to display this value. I added it to verify the query retrieves correct data
+FROM 
+	film
+WHERE 
+	release_year BETWEEN 2005 AND 2020;
+
+
+-- Exercise 17 - Find the titles of all movies that are in the same category as "Family"
+SELECT 
+	f.title AS MovieTitle,
+    fc.category_id  AS MovieCategory-- the excercise statement itself doesn't ask to display this value. I added it to verify the query retrieves correct data
+FROM
+	film AS f
+JOIN
+	film_category AS fc ON f.film_id = fc.film_id
+WHERE 
+	category_id = (
+		SELECT
+			category_id
+		FROM
+			category
+        WHERE name = "Family"
+        );
+
+
+-- Exercise 18 - Show the first and last names of actors who appear in more than 10 films
+SELECT
+    a.first_name AS ActorName, 
+    a.last_name AS ActorLastName,
+	COUNT(fa.film_id) AS MoviesCount
+FROM 
+	film_actor AS fa
+JOIN
+	actor AS a ON a.actor_id = fa.actor_id
+GROUP BY
+	fa.actor_id
+HAVING
+	MoviesCount > 10
+ORDER BY MoviesCount DESC;
+
+
+-- Exercise 19 -  Find the titles of all movies that are "R" and have a duration greater than 2 hours in the film table
+SELECT 
+	title, 
+    rating, 
+    length
+FROM
+	film
+WHERE 
+	rating = "R" AND length > 120
+ORDER BY length ASC;
+
+
+/* Exercise 20: Find movie categories that have an average length greater than 120 minutes and display the category name 
+along with the average length.*/
+
+SELECT
+    c.name AS CategoryName,
+    AVG(f.length) CategoryLengthDuration
+FROM
+	film AS f
+JOIN film_category AS fc ON fc.film_id = f.film_id
+JOIN category AS c ON c.category_id = fc.category_id
+GROUP BY fc.category_id
+HAVING CategoryLengthDuration > 120
+ORDER BY CategoryLengthDuration ASC;
+
+-- Exercise 21 - Find actors who have acted in at least 5 movies and display the actor's name along with the number of movies they have acted in
+-- I'm using the same solution as in Exercise 18, changing the condition in the HAVING clause
+SELECT
+    a.first_name AS ActorName, 
+    a.last_name AS ActorLastName,
+	COUNT(fa.film_id) AS MoviesCount
+FROM 
+	film_actor AS fa
+JOIN
+	actor AS a ON a.actor_id = fa.actor_id
+GROUP BY
+	fa.actor_id
+HAVING
+	MoviesCount >= 5 
+ORDER BY MoviesCount ASC;
+
+/*Exercise 22 - Find the title of all movies that were rented for more than 5 days. Use a subquery to
+find rental_ids with a duration greater than 5 days and then select the corresponding movies.
+*/
+SELECT 
+	f.title,
+    r.rental_id
+FROM
+	film AS f
+JOIN inventory AS i ON f.film_id = i.film_id
+JOIN rental AS r ON i.inventory_id = r.inventory_id
+WHERE rental_id IN (
+	SELECT 
+		rental_id
+	FROM 
+		rental
+	WHERE 
+		return_date IS NOT NULL AND 						-- this condition is to exclude records with no data
+        TIMESTAMPDIFF(HOUR, rental_date, return_date) > 120 -- even tough the exercise statement mention day as the time unit, I chose to use hours instead to include the results that have 5 days and some hours but less than 6 days
+    )
+; 
+
+/* Excersice 23: Find the first and last names of actors who have not acted in any movies in the "Horror" category.
+Use a subquery to find actors who have acted in movies in the "Horror" category and then exclude them from the list of actors.
+*/ 
+/* 
+-> Data to display: first and last name of actresses (this data is in actor table)
+-> Condition(s): actresses didn't act in "Horror" movies (tables needed: category (to find relation between category name "Horror" and 
+category_id), film_category (to find relation between category_id and film_id), film_actor (to find relation between actresses adn films))
+*/
+SELECT 
+	first_name AS ActorFirstName,
+    last_name AS ActorFirstName,
+	name AS MovieCategory
+FROM
+	actor AS a
+JOIN film_actor AS fa ON a.actor_id = fa.actor_id
+JOIN film_category AS fc ON fa.film_id = fc.film_id
+JOIN category AS c ON c.category_id = fc.category_id
+WHERE c.name = "Horror";
+
+
+-- BONUS!! 🎉🎉
+-- Exercise 24: Find the titles of films that are comedies and have a duration of more than 180 minutes in the film table
+SELECT 
+	f.title AS MovieTitle, 
+    f.length AS MovieDuration,
+    c.name AS MovieCategory
+FROM film AS f
+JOIN film_category AS fc ON fc.film_id = f.film_id
+JOIN category AS c ON c.category_id = fc.category_id
+WHERE c.name = "Comedy" AND length > 180;
+
+
+/* Exercise 25 - Find all actors who have acted together in at least one movie. 
+The query should return the actors' first and last names and the number of movies they have acted together in.
+*/
+/* 
+-> Data to display: actor first and last names and number of movies they have acted together in 
+-> Tables involves: film_actor (to get relation movie <-> actor) and actor (to get actor first_name and last_name) 
+-> Approach: 
+- first, group actors by pairs of actors that worked on the same film 
+- second, check if there are duplicates in those groups*/
+
+SELECT 
+    a1.first_name AS first_actor_first_name,
+    a1.last_name AS first_actor_last_name,
+    a2.first_name AS second_actor_first_name,
+    a2.last_name AS second_actor_last_name,
+    COUNT(*) AS number_of_movies_together
+FROM 
+    film_actor fa1
+/* join table film_actor to itself through film_id column to generate pairs of actors (from fa1 y fa2) that worked in the same movie. 
+The condition fa1.actor_id < fa2.actor_id avoids duplicates and self matching (an actor matching with itself)
+*/
+JOIN 
+    film_actor fa2 ON fa1.film_id = fa2.film_id AND fa1.actor_id < fa2.actor_id 
+JOIN 
+    actor a1 ON fa1.actor_id = a1.actor_id
+JOIN 
+    actor a2 ON fa2.actor_id = a2.actor_id
+GROUP BY 
+    fa1.actor_id, fa2.actor_id
+ORDER BY 
+    number_of_movies_together DESC;
 
